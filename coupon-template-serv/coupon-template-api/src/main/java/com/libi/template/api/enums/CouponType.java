@@ -1,4 +1,4 @@
-package com.libi.api.enums;
+package com.libi.template.api.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

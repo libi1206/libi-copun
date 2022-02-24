@@ -1,9 +1,11 @@
-package com.libi.api.beans;
+package com.libi.template.api.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 //import javax.validation.constraints.NotNull;
 
@@ -14,20 +16,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TemplateSearchParams {
+public class PagedCouponTemplateInfo {
 
-    private Long id;
+    public List<CouponTemplateInfo> templates;
 
-    private String name;
+    public int page;
 
-    private String type;
-
-    private Long shopId;
-
-    private Boolean available;
-
-    private int page;
-
-    private int pageSize;
+    public long total;
 
 }

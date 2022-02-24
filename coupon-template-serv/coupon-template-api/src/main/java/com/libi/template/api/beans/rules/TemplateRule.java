@@ -1,4 +1,4 @@
-package com.libi.api.beans.rules;
+package com.libi.template.api.beans.rules;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

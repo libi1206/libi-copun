@@ -1,6 +1,6 @@
-package com.libi.api.beans;
+package com.libi.template.api.beans;
 
-import com.geekbang.coupon.template.api.beans.rules.TemplateRule;
+import com.libi.template.api.beans.rules.TemplateRule;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
