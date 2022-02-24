@@ -12,7 +12,17 @@
         <module>coupon-template-serv</module>
         <module>coupon-calculation-serv</module>
         <module>coupon-customer-serv</module>
+        <module>middleware</module>
     </modules>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>
