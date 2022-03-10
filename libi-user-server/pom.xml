@@ -9,10 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>middleware</artifactId>
+    <artifactId>libi-user-server</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>gateway</module>
+        <module>libi-user-server-api</module>
+        <module>libi-user-server-impl</module>
     </modules>
 
 
