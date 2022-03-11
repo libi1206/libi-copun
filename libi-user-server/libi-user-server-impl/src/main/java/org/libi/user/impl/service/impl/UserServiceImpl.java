@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
  * @description 
  * @date 2022-03-10 23:31:24
  */
+@Service
 public class UserServiceImpl extends ServiceImpl<UserDao, UserDo> implements UserService {
 
 }
