@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.libi.evidence.impl.dao.EvidenceDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="org.libi.evidence.impl.entity.EvidenceDo" id="evidenceMap">
+        <result property="id" column="id"/>
+        <result property="evidenceId" column="evidence_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="version" column="version"/>
+        <result property="appId" column="app_id"/>
+        <result property="extractionCode" column="extraction_code"/>
+        <result property="hash" column="hash"/>
+        <result property="name" column="name"/>
+        <result property="shareTime" column="share_time"/>
+        <result property="type" column="type"/>
+        <result property="url" column="url"/>
+        <result property="userId" column="user_id"/>
+        <result property="txHash" column="tx_hash"/>
+        <result property="lat" column="lat"/>
+        <result property="lng" column="lng"/>
+        <result property="roomId" column="room_id"/>
+        <result property="uuid" column="uuid"/>
+        <result property="notarizeStatus" column="notarize_status"/>
+    </resultMap>
+
+
+</mapper>

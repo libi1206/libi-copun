@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>libi-evidence-server-api</module>
-        <module>libi-evidence-server-api</module>
         <module>libi-evidence-server-impl</module>
     </modules>
 

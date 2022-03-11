@@ -9,6 +9,7 @@ import org.libi.user.impl.entity.UserDo;
 import org.libi.user.impl.service.biz.UserBusinessService;
 import org.libi.user.impl.service.impl.UserServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 /**
  * @author :Libi
@@ -32,6 +33,9 @@ public class UserBusinessServiceImpl extends UserServiceImpl implements UserBusi
     }
 
     private UserInfoVO buildUserInfoVO(UserDo userDo) {
+        if (ObjectUtils.isEmpty(userDo)) {
+            return null;
+        }
         return UserInfoVO.builder()
                 .id(userDo.getId())
                 .phone(userDo.getPhone())

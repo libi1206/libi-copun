@@ -18,7 +18,6 @@
         <module>libi-user-server</module>
         <module>libi-billing-server</module>
         <module>libi-evidence-server</module>
-        <module>libi-evidence-server</module>
     </modules>
 
     <dependencyManagement>
@@ -135,6 +134,11 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>16.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+                <version>3.0.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

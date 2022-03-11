@@ -1,6 +1,6 @@
 spring:
   application:
-    name: libi-user-server
+    name: libi-evidence-server
   cloud:
     nacos:
       config:
