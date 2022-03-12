@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * 仅仅进行内部调用的controller
  */
 @FeignClient(value = "libi-user-server",path = "/invoke/user")
-public interface UserInvokeController {
+public interface UserInvokeService {
     @GetMapping("/phone")
     public UserInfoVO getUserByPhone(@RequestParam String phone);
 

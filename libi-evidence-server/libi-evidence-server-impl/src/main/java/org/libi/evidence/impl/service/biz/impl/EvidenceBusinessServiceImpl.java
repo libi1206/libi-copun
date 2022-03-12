@@ -8,7 +8,7 @@ import org.libi.evidence.impl.entity.EvidenceDo;
 import org.libi.evidence.impl.service.biz.EvidenceBusinessService;
 import org.libi.evidence.impl.service.impl.EvidenceServiceImpl;
 import org.libi.common.utils.NumUtil;
-import org.libi.user.api.invoke.UserInvokeController;
+import org.libi.user.api.invoke.UserInvokeService;
 import org.libi.user.api.model.vo.UserInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,14 +24,15 @@ import java.util.Date;
 @Service
 public class EvidenceBusinessServiceImpl extends EvidenceServiceImpl implements EvidenceBusinessService {
     @Autowired
-    private UserInvokeController userInvokeController;
+    private UserInvokeService userInvokeService;
 
     @Override
     public String doOnceEvidence(EvidenceInfoDto evidenceInfo) {
-        UserInfoVO user = userInvokeController.getUserById(evidenceInfo.getUserId());
+        UserInfoVO user = userInvokeService.getUserById(evidenceInfo.getUserId());
         if (ObjectUtils.isEmpty(user)) {
             throw new BusinessException(Code.USER_NOT_EXIST);
         }
+        user = userInvokeService.getUserByPhone(user.getPhone());
         EvidenceDo evidenceDo = new EvidenceDo();
         Date currentDate = new Date();
         evidenceDo.setEvidenceId(NumUtil.createEviNum(String.valueOf(EvidenceType.CONTENT.getCode()), currentDate.getTime(), "", ""));

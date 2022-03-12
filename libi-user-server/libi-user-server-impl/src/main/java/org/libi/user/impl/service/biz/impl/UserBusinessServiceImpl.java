@@ -2,6 +2,8 @@ package org.libi.user.impl.service.biz.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import org.libi.common.constant.Code;
+import org.libi.common.exctption.BusinessException;
 import org.libi.user.api.constant.AuthStatus;
 import org.libi.user.api.constant.AuthType;
 import org.libi.user.api.model.vo.UserInfoVO;
@@ -28,6 +30,9 @@ public class UserBusinessServiceImpl extends UserServiceImpl implements UserBusi
 
     @Override
     public UserInfoVO selectInfoById(String id) {
+        if ("2".equals(id)) {
+            throw new BusinessException(Code.ERROR);
+        }
         UserDo userDo = selectById(id);
         return buildUserInfoVO(userDo);
     }

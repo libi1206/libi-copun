@@ -34,3 +34,6 @@ spring:
           - dataId: nacos-discovry-config.yml
             group: DEFAULT_GROUP
             refresh: true
+          - dataId: sentinel-config.yml
+            group: DEFAULT_GROUP
+            refresh: true
