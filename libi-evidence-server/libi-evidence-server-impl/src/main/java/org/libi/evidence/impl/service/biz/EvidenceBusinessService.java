@@ -10,5 +10,10 @@ import org.libi.evidence.impl.service.EvidenceService;
  */
 public interface EvidenceBusinessService extends EvidenceService {
 
-    void doOnceEvidence(EvidenceInfoDto evidenceInfo);
+    /**
+     * 一次就可以返回的存证逻辑
+     * @param evidenceInfo
+     * @return 存证id
+     */
+    String doOnceEvidence(EvidenceInfoDto evidenceInfo);
 }

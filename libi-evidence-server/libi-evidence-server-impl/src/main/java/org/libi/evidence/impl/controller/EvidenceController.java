@@ -22,10 +22,10 @@ public class EvidenceController {
     private EvidenceBusinessService evidenceBusinessService;
 
     @PostMapping("/doEvidence")
-    public void doEvidence(
+    public String doEvidence(
             @RequestBody EvidenceInfoDto evidenceInfoDto
     ) {
-        evidenceBusinessService.doOnceEvidence(evidenceInfoDto);
+        return evidenceBusinessService.doOnceEvidence(evidenceInfoDto);
     }
 
 }

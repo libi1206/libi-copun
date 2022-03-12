@@ -18,6 +18,7 @@
         <module>libi-user-server</module>
         <module>libi-billing-server</module>
         <module>libi-evidence-server</module>
+        <module>libi-common</module>
     </modules>
 
     <dependencyManagement>
@@ -139,6 +140,12 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-loadbalancer</artifactId>
                 <version>3.0.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.4</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

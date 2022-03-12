@@ -16,5 +16,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EvidenceInfoDto {
     private String userId;
+    private String name;
     private String context;
 }
