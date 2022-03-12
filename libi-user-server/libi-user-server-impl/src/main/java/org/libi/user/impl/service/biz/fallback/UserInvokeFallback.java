@@ -11,22 +11,22 @@ import org.libi.user.api.model.vo.UserInfoVO;
 @Slf4j
 public class UserInvokeFallback {
     public static UserInfoVO getUserByPhone(String phone) {
-        System.out.println("触发降级，getUserByPhone");
+        log.info("触发降级，getUserByPhone");
         return null;
     }
 
     public static UserInfoVO getUserById(String id) {
-        System.out.println("触发降级，getUserById");
+        log.info("触发降级，getUserById");
         return null;
     }
 
     public static UserInfoVO getUserByPhoneBlocked(String phone) {
-        System.out.println("触发限流，getUserByPhone");
+        log.info("触发限流，getUserByPhone");
         return null;
     }
 
     public static UserInfoVO getUserByIdBlocked(String id) {
-        System.out.println("触发限流，getUserById");
+        log.info("触发限流，getUserById");
         return null;
     }
 }

@@ -2,6 +2,7 @@ package org.libi.user.impl.service.biz.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.libi.common.constant.Code;
 import org.libi.common.exctption.BusinessException;
 import org.libi.user.api.constant.AuthStatus;
@@ -19,6 +20,7 @@ import org.springframework.util.ObjectUtils;
  * @date :3/11/22 2:18 PM
  */
 @Service
+@Slf4j
 public class UserBusinessServiceImpl extends UserServiceImpl implements UserBusinessService {
     @Override
     public UserInfoVO selectByPhone(String phone) {
@@ -31,6 +33,7 @@ public class UserBusinessServiceImpl extends UserServiceImpl implements UserBusi
     @Override
     public UserInfoVO selectInfoById(String id) {
         if ("2".equals(id)) {
+            log.info("执行方法");
             throw new BusinessException(Code.ERROR);
         }
         UserDo userDo = selectById(id);
