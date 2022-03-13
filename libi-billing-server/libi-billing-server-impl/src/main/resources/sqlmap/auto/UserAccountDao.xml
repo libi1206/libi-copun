@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.libi.billing.impl.dao.UserAccountDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="org.libi.billing.impl.entity.UserAccountDo" id="userAccountMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="userId" column="user_id"/>
+        <result property="accountType" column="account_type"/>
+        <result property="balance" column="balance"/>
+    </resultMap>
+
+    <select id="findBalanceByUserAndAccountType" resultType="org.libi.billing.api.model.query.BalanceQuery">
+        select id, balance
+        from user_account
+        where user_id = #{userId}
+          and account_type = #{accountType}
+    </select>
+
+    <update id="decreaseAccountByUserId">
+        update user_account
+        set balance = balance - #{cost}
+        where user_id = #{userId}
+          and account_type = #{accountType}
+    </update>
+
+    <update id="increaseAccountByUserId">
+        update user_account
+        set balance = balance + #{changeBalance}
+        where user_id = #{userId}
+          and account_type = #{accountType}
+    </update>
+
+
+    <select id="getAccountInfoListByUserIdList" resultType="org.libi.billing.impl.entity.UserAccountDo">
+        select *
+        from user_account
+        where user_id in
+        <foreach item="item" collection="userIdList" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+          and account_type = #{accountType}
+    </select>
+
+</mapper>

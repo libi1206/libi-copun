@@ -4,8 +4,10 @@ import org.libi.common.constant.Code;
 import org.libi.common.exctption.BusinessException;
 import org.libi.evidence.api.constant.EvidenceType;
 import org.libi.evidence.api.model.dto.EvidenceInfoDto;
+import org.libi.evidence.api.model.message.EvidenceEndMessage;
 import org.libi.evidence.impl.entity.EvidenceDo;
 import org.libi.evidence.impl.service.biz.EvidenceBusinessService;
+import org.libi.evidence.impl.service.biz.EvidenceEndProducerService;
 import org.libi.evidence.impl.service.impl.EvidenceServiceImpl;
 import org.libi.common.utils.NumUtil;
 import org.libi.user.api.invoke.UserInvokeService;
@@ -25,6 +27,8 @@ import java.util.Date;
 public class EvidenceBusinessServiceImpl extends EvidenceServiceImpl implements EvidenceBusinessService {
     @Autowired
     private UserInvokeService userInvokeService;
+    @Autowired
+    private EvidenceEndProducerService evidenceEndProducerService;
 
     @Override
     public String doOnceEvidence(EvidenceInfoDto evidenceInfo) {
@@ -42,6 +46,8 @@ public class EvidenceBusinessServiceImpl extends EvidenceServiceImpl implements 
         evidenceDo.setType(EvidenceType.CONTENT.getCode());
         evidenceDo.setUserId(evidenceInfo.getUserId());
         insert(evidenceDo);
+        //发送消息
+        evidenceEndProducerService.sendOnceEvidence(EvidenceEndMessage.builder().evidenceId(evidenceDo.getEvidenceId()).userId(evidenceInfo.getUserId()).build());
         return evidenceDo.getEvidenceId();
     }
 }

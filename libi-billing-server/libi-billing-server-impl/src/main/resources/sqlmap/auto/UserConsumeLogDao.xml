@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.libi.billing.impl.dao.UserConsumeLogDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="org.libi.billing.impl.entity.UserConsumeLogDo" id="userConsumeLogMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="userId" column="user_id"/>
+        <result property="logId" column="log_id"/>
+        <result property="evidenceId" column="evidence_id"/>
+        <result property="evidenceName" column="evidence_name"/>
+        <result property="evidenceType" column="evidence_type"/>
+        <result property="cost" column="cost"/>
+        <result property="accountType" column="account_type"/>
+        <result property="duration" column="duration"/>
+    </resultMap>
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="org.libi.billing.impl.entity.AdminUserConsumeLogDo" id="adminUserConsumeLogMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="logId" column="log_id"/>
+        <result property="evidenceType" column="evidence_type"/>
+        <result property="evidenceName" column="evidence_name"/>
+        <result property="cost" column="cost"/>
+        <result property="duration" column="duration"/>
+<!--        <result property="userName" column="username"/>-->
+<!--        <result property="phone" column="phone"/>-->
+        <result property="userId" column="user_id"/>
+        <result property="duration" column="duration"/>
+    </resultMap>
+
+
+    <select id="getLogListByAdmin" resultMap="adminUserConsumeLogMap">
+
+
+        select ucl.id,ucl.log_id,ucl.cost,ucl.create_time,ucl.evidence_type,ucl.duration,ucl.evidence_name,ucl.user_id
+        from user_consume_log ucl
+        where 1=1
+        <if test="startTime!=null">
+            and ucl.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime!=null">
+            and ucl.create_time &lt;= #{endTime}
+        </if>
+        <if test="logTypeList!=null and logTypeList.size()>0">
+            and ucl.evidence_type in
+            <foreach item="item" collection="logTypeList" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="userIdList!=null and userIdList.size()>0">
+            and ucl.user_id in
+            <foreach item="item" collection="userIdList" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        order by ucl.create_time desc
+    </select>
+
+
+    <select id="getTotalCost" resultType="BigDecimal">
+        select sum(ucl.cost)
+        from user_consume_log ucl
+        where 1=1
+        <if test="startTime!=null">
+            and ucl.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime!=null">
+            and ucl.create_time &lt;= #{endTime}
+        </if>
+
+        <if test="logTypeList!=null and logTypeList.size()>0">
+            and ucl.evidence_type in
+            <foreach item="item" collection="logTypeList" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="userIdList!=null and userIdList.size()>0">
+            and ucl.user_id in
+            <foreach item="item" collection="userIdList" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        order by ucl.create_time desc
+    </select>
+
+</mapper>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.libi.billing.impl.dao.UserAccountLogDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="org.libi.billing.impl.entity.UserAccountLogDo" id="userAccountLogMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="logNo" column="log_no"/>
+        <result property="userId" column="user_id"/>
+        <result property="accountType" column="account_type"/>
+        <result property="changeValue" column="change_value"/>
+        <result property="direction" column="direction"/>
+        <result property="sceneType" column="scene_type"/>
+        <result property="oldValue" column="old_value"/>
+        <result property="newValue" column="new_value"/>
+        <result property="isReturn" column="is_return"/>
+        <result property="returnLogId" column="return_log_id"/>
+        <result property="refId" column="ref_id"/>
+        <result property="refType" column="ref_type"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <resultMap type="org.libi.billing.api.model.vo.ConsumeLogVo" id="selectConsumeLogsByUserIdMap">
+        <result property="id" column="id"/>
+        <result property="logNo" column="log_no"/>
+        <result property="consumeTime" column="max(a.create_time)"/>
+        <result property="userId" column="user_id"/>
+        <result property="accountType" column="account_type"/>
+        <result property="changeValue" column="sum(a.change_value)"/>
+        <result property="direction" column="direction"/>
+        <result property="sceneType" column="scene_type"/>
+        <result property="oldValue" column="old_value"/>
+        <result property="newValue" column="new_value"/>
+        <result property="isReturn" column="is_return"/>
+        <result property="returnLogId" column="return_log_id"/>
+        <result property="refId" column="ref_id"/>
+        <result property="refType" column="ref_type"/>
+        <result property="consumeNumber" column="GROUP_CONCAT(a.remark)"/>
+    </resultMap>
+
+    <select id="selectConsumeLogsByUserId" resultMap="selectConsumeLogsByUserIdMap">
+        select a.id,
+        a.log_no,
+        max(a.create_time),
+        a.user_id,
+        a.account_type,
+        sum(a.change_value),
+        a.direction,
+        a.scene_type,
+        a.old_value,
+        a.new_value,
+        a.is_return,
+        a.return_log_id,
+        a.ref_id,
+        a.ref_type,
+        GROUP_CONCAT(a.remark)
+        from user_account_log a
+        left join user_account_log b on a.id = b.return_log_id
+        where a.user_id = #{userId}
+        and a.scene_type = 0
+        and b.is_return is null
+        <if test="logNo != null">
+            and a.log_no = #{logNo}
+        </if>
+        <if test="startTime != null">
+            and a.create_time &gt; #{startTime}
+        </if>
+        <if test="endTime != null">
+            and a.create_time &lt; #{endTime}
+        </if>
+        <if test="refType != null">
+            and a.ref_type = #{refType}
+        </if>
+        order by a.create_time desc
+        group by a.ref_id
+        limit #{limit},#{pageSize}
+    </select>
+
+    <select id="countConsumeLogsByUserId" resultType="java.lang.Long">
+        select count(1)
+        from (
+        select 1
+        from user_account_log a
+        left join user_account_log b on a.id = b.return_log_id
+        where a.user_id = #{userId}
+        and a.scene_type = 0
+        and b.is_return is null
+        <if test="logNo != null">
+            and a.log_no = #{logNo}
+        </if>
+        <if test="startTime != null">
+            and a.create_time &gt; #{startTime}
+        </if>
+        <if test="endTime != null">
+            and a.create_time &lt; #{endTime}
+        </if>
+        <if test="refType != null">
+            and a.ref_type = #{refType}
+        </if>
+        group by a.ref_id
+        ) v
+    </select>
+
+    <select id="findReturnId" resultType="java.lang.Long">
+        select id
+        from user_account_log
+        where user_id = #{userId}
+          and ref_id = #{evidenceId}
+          and account_type = #{accountType}
+    </select>
+
+
+    <select id="selectTotalChangeCoin" resultType="java.math.BigDecimal">
+        select sum(a.change_value)
+        from user_account_log a
+        where 1 = 1
+        <if test="userId != null">
+            and a.user_id = #{userId}
+        </if>
+        <if test="isReturn != null">
+            and a.is_return = #{isReturn}
+        </if>
+        <if test="direction != null">
+            and a.direction = #{direction}
+        </if>
+        <if test="startTime != null">
+            and a.create_time &gt; #{startTime}
+        </if>
+        <if test="endTime != null">
+            and a.create_time &lt; #{endTime}
+        </if>
+        <if test="refType != null">
+            and a.ref_type = #{refType}
+        </if>
+        <if test="sceneType != null">
+            and a.scene_type = #{sceneType}
+        </if>
+        <if test="returnIdList!=null and returnIdList.size()>0">
+            and a.id not in
+            <foreach item="item" collection="returnIdList" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectConsumeCoinUserIdList"
+            resultType="org.libi.billing.api.model.vo.ConsumeCoinVO">
+        select user_id, SUM(change_value) consume_coin
+        from user_account_log
+        where scene_type = 0
+        <if test="startTime != null">
+            and create_time &gt; #{startTime}
+        </if>
+        <if test="endTime != null">
+            and create_time &lt; #{endTime}
+        </if>
+        and id not in
+        <!-- 移除回退的消费id-->
+        (select return_log_id
+        from user_account_log
+        where scene_type = 2
+        and return_log_id is true
+        and create_time
+        <if test="startTime != null">
+            and create_time &gt; #{startTime}
+        </if>
+        <if test="endTime != null">
+            and create_time &lt; #{endTime}
+        </if>)
+
+        group by user_id;
+    </select>
+
+    <select id="selectRechargeCoinUserIdList"
+            resultType="org.libi.billing.api.model.vo.RechargeCoinVO">
+        select user_id, SUM(change_value) recharge_coin, count(change_value) recharge_num
+        from user_account_log
+        where scene_type = 1
+        <if test="startTime != null">
+            and create_time &gt; #{startTime}
+        </if>
+        <if test="endTime != null">
+            and create_time &lt; #{endTime}
+        </if>
+        group by user_id;
+    </select>
+
+</mapper>
