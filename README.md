@@ -19,4 +19,5 @@
 * 服务容错：Sentinel
 * 消息驱动：SpringCloud Stream + RabbitMQ
 * 分布式事务：Seata（待接入，等内部的逻辑完善）
+* 网关：SpringCloud Gateway（待接入）
 
